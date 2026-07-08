@@ -1,0 +1,1154 @@
+import { Link } from 'react-router-dom';
+import Navbar from '../../components/feature/Navbar';
+import Footer from '../../components/feature/Footer';
+import SeoHead from '../../components/feature/SeoHead';
+import ABTestButton from '../../components/feature/ABTestButton';
+import InlineCTA from '../../components/feature/InlineCTA';
+import MobileStickyCTA from '../../components/feature/MobileStickyCTA';
+import TrustBadge from '../../components/feature/TrustBadge';
+import PromoBanner from '../../components/feature/PromoBanner';
+import { useState, useRef, useEffect } from 'react';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useParallax } from '../../hooks/useParallax';
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://broad-viewsolutions.com';
+
+const homeSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "LawnCareService",
+    "name": "Broadview Solutions",
+    "legalName": "Broadview Solutions",
+    "description": "Professional lawn care, seasonal cleanup, and snow plowing services for residential and commercial properties in Goshen, Elkhart, Bristol, Middlebury, and Wakarusa, Indiana.",
+    "url": `${siteUrl}/`,
+    "logo": "https://static.readdy.ai/image/af8ae33b67f17c82a3c09cb93c97754b/2887571b48c57ebbe859c1035b163ed5.png",
+    "image": "https://static.readdy.ai/image/af8ae33b67f17c82a3c09cb93c97754b/f85252a61d381de847baf988140faf82.jpeg",
+    "telephone": "+1-574-596-3633",
+    "email": "alex28Saucedo@gmail.com",
+    "foundingDate": "2020",
+    "priceRange": "$$",
+    "currenciesAccepted": "USD",
+    "paymentAccepted": "Cash, Check, Credit Card",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Goshen",
+      "addressRegion": "IN",
+      "postalCode": "46526",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 41.5742,
+      "longitude": -85.8326
+    },
+    "hasMap": "https://maps.google.com/?q=Goshen,+IN+46526",
+    "areaServed": [
+      { "@type": "City", "name": "Goshen", "containedInPlace": { "@type": "State", "name": "Indiana" } },
+      { "@type": "City", "name": "Elkhart", "containedInPlace": { "@type": "State", "name": "Indiana" } },
+      { "@type": "City", "name": "Bristol", "containedInPlace": { "@type": "State", "name": "Indiana" } },
+      { "@type": "City", "name": "Middlebury", "containedInPlace": { "@type": "State", "name": "Indiana" } },
+      { "@type": "City", "name": "Wakarusa", "containedInPlace": { "@type": "State", "name": "Indiana" } }
+    ],
+    "serviceArea": {
+      "@type": "AdministrativeArea",
+      "name": "Elkhart County, Indiana"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "07:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "16:00"
+      }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Lawn Care & Property Maintenance Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Lawn Maintenance",
+            "description": "Weekly and bi-weekly professional mowing, edging, trimming, and lawn health assessments for residential and commercial properties."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Seasonal Cleanup",
+            "description": "Spring and fall cleanup including leaf removal, bed preparation, debris clearing, and mulch installation."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Snow Plowing",
+            "description": "24/7 winter storm monitoring, snow plowing, sidewalk clearing, and ice melt application for driveways, parking lots, and walkways."
+          }
+        }
+      ]
+    },
+    "sameAs": [
+      "https://www.facebook.com/BroadViewLawns"
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": "5",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Verified Customer" },
+        "reviewBody": "Alex and his team serviced our property in Bristol, Indiana, and they consistently did an excellent job. They're thorough, professional, and always make sure to clean up the grass clippings at our request and blow off our porches before they leave. I would definitely recommend them to others.",
+        "datePublished": "2024-07-15"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Mark T." },
+        "reviewBody": "Broadview Solutions has been maintaining our commercial property in Goshen for two seasons now. Reliable, professional, and the lawn always looks immaculate. They show up on schedule every single time — no excuses, no surprises. Highly recommend for any business owner in Elkhart County.",
+        "datePublished": "2024-08-20"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Sarah M." },
+        "reviewBody": "We hired Broadview for fall cleanup and were blown away by the results. They cleared every leaf, trimmed the beds, and left the yard looking better than it did all summer. Alexis was easy to communicate with and the pricing was very fair. Will absolutely be using them again.",
+        "datePublished": "2024-10-05"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Dave R." },
+        "reviewBody": "Called Broadview after a big snowstorm and they were out plowing within a couple hours. Driveway and walkways were completely clear. Very responsive and professional. This is the kind of local business you want to support — they actually care about doing a good job.",
+        "datePublished": "2025-01-18"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Jennifer K." },
+        "reviewBody": "I've tried several lawn care companies in the Elkhart area and Broadview Solutions is by far the best. The crew is friendly, the work is consistent, and they actually listen when you have specific requests. My yard has never looked this good. Five stars without hesitation.",
+        "datePublished": "2025-03-10"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Broadview Solutions",
+    "url": `${siteUrl}/`,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${siteUrl}/blog?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  }
+];
+
+export default function Home() {
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const heroRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Scroll reveal hooks for different sections
+  const servicesHeaderReveal = useScrollReveal();
+  const serviceCard1Reveal = useScrollReveal({ threshold: 0.2 });
+  const serviceCard2Reveal = useScrollReveal({ threshold: 0.2 });
+  const serviceCard3Reveal = useScrollReveal({ threshold: 0.2 });
+  
+  const divisionCommercialReveal = useScrollReveal({ threshold: 0.3 });
+  const divisionResidentialReveal = useScrollReveal({ threshold: 0.3 });
+  
+  const reviewsReveal = useScrollReveal({ threshold: 0.1 });
+  
+  const aboutHeaderReveal = useScrollReveal();
+  const aboutStoryReveal = useScrollReveal({ threshold: 0.2 });
+  const aboutClientsReveal = useScrollReveal({ threshold: 0.2 });
+  const aboutCommunityReveal = useScrollReveal({ threshold: 0.2 });
+  
+  const ctaReveal = useScrollReveal({ threshold: 0.3 });
+
+  // Parallax hooks for images
+  const aboutTeamParallax = useParallax({ speed: 0.3 });
+  const aboutClientParallax = useParallax({ speed: 0.3 });
+  const divisionCommercialParallax = useParallax({ speed: 0.4 });
+  const divisionResidentialParallax = useParallax({ speed: 0.4 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!heroRef.current) return;
+      if (rafRef.current !== null) return;
+
+      rafRef.current = requestAnimationFrame(() => {
+        if (heroRef.current) {
+          const rect = heroRef.current.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+          const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+          setMousePosition({ x, y });
+        }
+        rafRef.current = null;
+      });
+    };
+
+    const heroElement = heroRef.current;
+    if (heroElement) {
+      heroElement.addEventListener('mousemove', handleMouseMove, { passive: true });
+    }
+
+    return () => {
+      if (heroElement) {
+        heroElement.removeEventListener('mousemove', handleMouseMove);
+      }
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormStatus('submitting');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch('https://readdy.ai/api/form/d6isfputn3rcgj1rb8qg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData as any).toString(),
+      });
+
+      if (response.ok) {
+        setFormStatus('success');
+        form.reset();
+        setTimeout(() => setFormStatus('idle'), 5000);
+      } else {
+        setFormStatus('error');
+        setTimeout(() => setFormStatus('idle'), 5000);
+      }
+    } catch (error) {
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-charcoal-dark">
+      <SeoHead
+        title="Goshen Indiana Lawn Care & Snow Plowing | Broadview Solutions"
+        description="Broadview Solutions provides professional lawn care, lawn maintenance, seasonal cleanup, and snow plowing in Goshen, Elkhart, Wakarusa, Bristol & Middlebury, IN. Licensed & insured. Call (574) 596-3633 for a free estimate."
+        keywords="Lawn care Elkhart IN, Lawn care Bristol IN, Lawn care Goshen IN, Lawn care Middlebury IN, Lawn care Wakarusa IN, Lawn maintenance Elkhart IN, Lawn maintenance Bristol IN, Lawn maintenance Goshen IN, Lawn maintenance Middlebury IN, Lawn maintenance Wakarusa IN, Residential lawn services Goshen IN, snow plowing Elkhart County, seasonal cleanup Indiana, Broadview Solutions"
+        canonical="/"
+        ogTitle="Goshen Indiana Lawn Care & Snow Plowing | Broadview Solutions"
+        ogDescription="Broadview Solutions provides professional lawn care, lawn maintenance, seasonal cleanup, and snow plowing in Goshen, Elkhart, Wakarusa, Bristol & Middlebury, IN. Licensed & insured. Call (574) 596-3633 for a free estimate."
+        schema={homeSchema}
+      />
+      <Navbar />
+
+      <PromoBanner />
+
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+        <div 
+          className="absolute inset-0 transition-transform duration-300 ease-out"
+          style={{
+            transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px) scale(1.1)`,
+            willChange: 'transform',
+          }}
+        >
+          <img 
+            src="https://readdy.ai/api/search-image?query=close%20up%20ground%20level%20view%20of%20lush%20thick%20green%20grass%20lawn%20at%20golden%20hour%20warm%20sunlight%20glowing%20through%20blades%20of%20grass%20bokeh%20background%20rich%20deep%20green%20color%20healthy%20turf%20premium%20residential%20lawn%20care%20cinematic%20photography%20dramatic%20lighting%20vibrant%20saturated%20colors%20beautiful%20outdoor%20scene&width=1920&height=1080&seq=hero_new_bg_002&orientation=landscape" 
+            alt="Professional Lawn Care Services" 
+            title="Professional Lawn Care Services in Goshen & Elkhart County, Indiana — Broadview Solutions"
+            className="w-full h-full object-cover object-top"
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+          />
+          <div 
+            className="absolute inset-0 bg-gradient-to-b from-charcoal-dark/85 via-charcoal-dark/60 to-charcoal-dark/85 transition-opacity duration-300"
+            style={{
+              opacity: 1 - Math.abs(mousePosition.x) * 0.1
+            }}
+          ></div>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full py-16 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Text Content */}
+            <div
+              className="transition-transform duration-300 ease-out"
+              style={{
+                transform: `translate(${mousePosition.x * -15}px, ${mousePosition.y * -15}px)`
+              }}
+            >
+              <div 
+                className="inline-flex items-center bg-silver-dark/20 backdrop-blur-sm border border-silver-dark/30 text-silver-light px-4 py-2 rounded-full text-sm font-medium mb-6 transition-transform duration-300 ease-out"
+                style={{
+                  transform: `translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)`
+                }}
+              >
+                <i className="ri-shield-check-line mr-2 text-accent"></i>
+                Professional Service You Can Trust
+              </div>
+              <h1 className="text-5xl lg:text-6xl font-bold text-offwhite mb-6 leading-tight">
+                Expert Lawn Care, Seasonal Cleanup &amp; Snow Plowing Services
+              </h1>
+              <p className="text-xl text-silver-light mb-8">
+                Professional Property Maintenance for Commercial &amp; Residential Properties
+              </p>
+              <div 
+                className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 transition-transform duration-300 ease-out"
+                style={{
+                  transform: `translate(${mousePosition.x * -8}px, ${mousePosition.y * -8}px)`
+                }}
+              >
+                <div className="flex flex-col items-center sm:items-start gap-3">
+                  <ABTestButton 
+                    to="/contact" 
+                    elementId="hero_primary_cta"
+                    size="md"
+                    variant="primary"
+                  />
+                </div>
+                <Link 
+                  to="/services/lawn-maintenance" 
+                  className="bg-silver-dark/20 backdrop-blur-sm text-offwhite border-2 border-silver px-8 py-4 rounded-lg text-lg font-semibold hover:bg-silver-dark/30 hover:border-silver-light transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center whitespace-nowrap cursor-pointer"
+                >
+                  View Our Services
+                </Link>
+              </div>
+              
+              {/* Hero Trust Badge */}
+              <div className="mt-8">
+                <TrustBadge variant="hero" showMiniTestimonials={true} />
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap gap-6 mt-8">
+                <div className="bg-charcoal/90 backdrop-blur-sm border border-silver-dark/30 px-6 py-4 rounded-lg shadow-lg">
+                  <div className="text-3xl font-bold text-primary">Quality</div>
+                  <div className="text-sm text-silver">Professional Service</div>
+                </div>
+                <div className="bg-charcoal/90 backdrop-blur-sm border border-silver-dark/30 px-6 py-4 rounded-lg shadow-lg">
+                  <div className="text-3xl font-bold text-accent">Licensed</div>
+                  <div className="text-sm text-silver">&amp; Insured</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Logo */}
+            <div 
+              className="hidden lg:flex items-center justify-center transition-transform duration-300 ease-out"
+              style={{
+                transform: `translate(${mousePosition.x * 25}px, ${mousePosition.y * 25}px)`
+              }}
+            >
+              <img
+                src="https://static.readdy.ai/image/af8ae33b67f17c82a3c09cb93c97754b/2887571b48c57ebbe859c1035b163ed5.png"
+                alt="Broadview Solutions Logo"
+                title="Broadview Solutions — Lawn Care, Seasonal Cleanup & Snow Plowing"
+                className="w-full max-w-lg h-auto object-contain drop-shadow-2xl"
+                width={512}
+                height={512}
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <section className="bg-charcoal py-20 cv-auto">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div 
+            ref={servicesHeaderReveal.ref}
+            className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-700 ${
+              servicesHeaderReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="text-accent uppercase text-sm font-semibold tracking-wider mb-4">OUR CORE SERVICES</div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-offwhite mb-6">
+              Three Essential Services <span className="text-primary italic">for Year-Round Property Care</span>
+            </h2>
+            <p className="text-lg text-silver-light leading-relaxed">
+              We specialize in the fundamentals that keep your property looking great and functioning smoothly throughout every season.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Lawn Maintenance - Featured Core Service */}
+            <Link 
+              ref={serviceCard1Reveal.ref}
+              to="/services/lawn-maintenance"
+              className={`lg:col-span-3 bg-gradient-to-br from-primary/20 to-charcoal-dark border-2 border-primary p-10 rounded-xl hover:border-primary hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group relative overflow-hidden ${
+                serviceCard1Reveal.isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-12'
+              }`}
+            >
+              <div className="absolute top-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                ⭐ OUR CORE SERVICE
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="relative h-80 lg:h-96 rounded-xl overflow-hidden shadow-2xl">
+                  <img 
+                    src="https://readdy.ai/api/search-image?query=professional%20lawn%20mowing%20service%20landscaper%20cutting%20grass%20with%20commercial%20mower%20creating%20perfect%20stripes%20manicured%20lawn%20grounds%20maintenance%20worker%20in%20uniform%20healthy%20vibrant%20green%20grass%20clean%20edges%20professional%20landscaping%20equipment&width=800&height=600&seq=lawncore001&orientation=landscape" 
+                    alt="Professional Lawn Maintenance" 
+                    title="Professional Lawn Maintenance Service — Weekly Mowing & Edging by Broadview Solutions"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div>
+                  <div className="w-24 h-24 flex items-center justify-center bg-primary/20 border-3 border-primary rounded-full mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-500 group-hover:-translate-y-2">
+                    <i className="ri-plant-line text-5xl text-primary group-hover:text-white transition-colors duration-500"></i>
+                  </div>
+                  <h3 className="text-3xl font-bold text-offwhite mb-4">Lawn Maintenance</h3>
+                  <p className="text-silver-light text-lg leading-relaxed mb-6">
+                    Our flagship service delivers consistent, professional lawn care that keeps your grass healthy, vibrant, and perfectly manicured. From weekly mowing to seasonal treatments, we handle every detail so you don't have to.
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-primary text-xl"></i>
+                      <span>Weekly or bi-weekly professional mowing</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-primary text-xl"></i>
+                      <span>Precision edging and string trimming</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-primary text-xl"></i>
+                      <span>Seasonal lawn health assessments</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </Link>
+
+            {/* Seasonal Cleanup */}
+            <Link 
+              ref={serviceCard2Reveal.ref}
+              to="/services/seasonal-cleanup"
+              className={`lg:col-span-3 bg-gradient-to-br from-accent/10 to-charcoal-dark border-2 border-accent/40 p-10 rounded-xl hover:border-accent hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group relative overflow-hidden ${
+                serviceCard2Reveal.isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: '100ms' }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="w-24 h-24 flex items-center justify-center bg-accent/20 border-3 border-accent rounded-full mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-500 group-hover:-translate-y-2">
+                    <i className="ri-leaf-line text-5xl text-accent group-hover:text-white transition-colors duration-500"></i>
+                  </div>
+                  <h3 className="text-3xl font-bold text-offwhite mb-4">Seasonal Cleanup</h3>
+                  <p className="text-silver-light text-lg leading-relaxed mb-6">
+                    Prepare your property for changing seasons with comprehensive spring and fall cleanup services that keep your landscape fresh, healthy, and ready for what's next.
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>Spring bed preparation &amp; debris removal</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>Fall leaf removal &amp; cleanup</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>Mulch installation</span>
+                    </li>
+                  </ul>
+                  <div className="mt-6 flex items-center space-x-2 text-accent font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
+                    <span>Learn More</span>
+                    <i className="ri-arrow-right-line"></i>
+                  </div>
+                </div>
+                <div className="relative h-80 lg:h-96 rounded-xl overflow-hidden shadow-2xl order-2 lg:order-1">
+                  <img 
+                    src="https://readdy.ai/api/search-image?query=professional%20landscaper%20raking%20autumn%20leaves%20in%20a%20residential%20yard%20fall%20seasonal%20cleanup%20crew%20gathering%20leaf%20piles%20on%20green%20lawn%20colorful%20orange%20red%20leaves%20scattered%20across%20grass%20clean%20tidy%20property%20outdoor%20autumn%20afternoon%20warm%20golden%20light&width=800&height=600&seq=seasonal_cleanup_card_001&orientation=landscape" 
+                    alt="Seasonal Cleanup Services" 
+                    title="Seasonal Cleanup Services — Spring & Fall Leaf Removal by Broadview Solutions"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </Link>
+
+            {/* Snow Plowing */}
+            <Link 
+              ref={serviceCard3Reveal.ref}
+              to="/services/snow-plowing"
+              className={`lg:col-span-3 bg-gradient-to-br from-accent/10 to-charcoal-dark border-2 border-accent/40 p-10 rounded-xl hover:border-accent hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group relative overflow-hidden ${
+                serviceCard3Reveal.isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: '200ms' }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="relative h-80 lg:h-96 rounded-xl overflow-hidden shadow-2xl order-2 lg:order-1">
+                  <img 
+                    src="https://readdy.ai/api/search-image?query=snow%20plow%20truck%20clearing%20residential%20driveway%20after%20heavy%20snowfall%20winter%20property%20maintenance%20professional%20snow%20removal%20service%20cleared%20path%20clean%20driveway%20suburban%20home%20snowy%20landscape%20cold%20winter%20morning%20bright%20overcast%20sky&width=800&height=600&seq=snow_plowing_card_001&orientation=landscape" 
+                    alt="Snow Plowing Services" 
+                    title="Snow Plowing & Ice Removal Services in Goshen & Elkhart County — Broadview Solutions"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="order-1 lg:order-2">
+                  <div className="w-24 h-24 flex items-center justify-center bg-accent/20 border-3 border-accent rounded-full mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-500 group-hover:-translate-y-2">
+                    <i className="ri-snowy-line text-5xl text-accent group-hover:text-white transition-colors duration-500"></i>
+                  </div>
+                  <h3 className="text-3xl font-bold text-offwhite mb-4">Snow Plowing</h3>
+                  <p className="text-silver-light text-lg leading-relaxed mb-6">
+                    Reliable winter services that keep your property safe and accessible during snow and ice events with 24/7 monitoring and rapid response when you need it most.
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>24/7 storm monitoring &amp; rapid response</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>Professional plowing &amp; sidewalk clearing</span>
+                    </li>
+                    <li className="flex items-center space-x-3 text-silver-light">
+                      <i className="ri-check-line text-accent text-xl"></i>
+                      <span>Ice melt application</span>
+                    </li>
+                  </ul>
+                  <div className="mt-6 flex items-center space-x-2 text-accent font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
+                    <span>Learn More</span>
+                    <i className="ri-arrow-right-line"></i>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Division Showcase */}
+      <section className="grid grid-cols-1 lg:grid-cols-2">
+        {/* Commercial Division */}
+        <Link 
+          ref={divisionCommercialReveal.ref}
+          to="/commercial" 
+          className={`relative h-[500px] overflow-hidden group cursor-pointer transition-all duration-700 ${
+            divisionCommercialReveal.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-12'
+          }`}
+        >
+          <div ref={divisionCommercialParallax.ref} className="absolute inset-0">
+            <img 
+              src="https://readdy.ai/api/search-image?query=modern%20office%20park%20commercial%20building%20with%20professional%20landscaping%20manicured%20lawns%20corporate%20campus%20business%20property%20exterior%20contemporary%20architecture%20green%20spaces%20commercial%20real%20estate%20professional%20grounds%20maintenance%20clean%20landscape%20design%20daytime%20photography&width=960&height=500&seq=comdiv001&orientation=landscape" 
+              alt="Commercial Landscaping Services" 
+              title="Commercial Landscaping & Grounds Maintenance — Broadview Solutions Goshen IN"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              width={960}
+              height={500}
+              loading="lazy"
+              decoding="async"
+              style={{
+                transform: `translateY(${divisionCommercialParallax.offset}px)`
+              }}
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/90 via-charcoal/60 to-charcoal-dark/40"></div>
+          <div className="absolute inset-0 border-4 border-transparent group-hover:border-silver-dark/30 transition-all duration-500"></div>
+          <div className="absolute bottom-0 left-0 right-0 p-12">
+            <div className="inline-block bg-silver-dark/20 backdrop-blur-sm border border-silver-dark/40 text-silver-light px-4 py-2 rounded-full text-sm font-medium mb-4">
+              For Businesses
+            </div>
+            <h2 className="text-4xl font-bold text-offwhite mb-4">Commercial Property Services</h2>
+            <p className="text-silver-light text-lg mb-6 max-w-md">
+              Professional property maintenance that enhances your business image and creates lasting impressions for clients and tenants.
+            </p>
+            <div className="inline-flex items-center text-offwhite font-semibold space-x-2 border-2 border-silver px-6 py-3 rounded-lg hover:bg-silver hover:text-charcoal-dark transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 whitespace-nowrap">
+              <span>Explore Commercial Services</span>
+              <i className="ri-arrow-right-line"></i>
+            </div>
+          </div>
+        </Link>
+
+        {/* Residential Division */}
+        <Link 
+          ref={divisionResidentialReveal.ref}
+          to="/residential" 
+          className={`relative h-[500px] overflow-hidden group cursor-pointer transition-all duration-700 ${
+            divisionResidentialReveal.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-12'
+          }`}
+          style={{ transitionDelay: '150ms' }}
+        >
+          <div ref={divisionResidentialParallax.ref} className="absolute inset-0">
+            <img 
+              src="https://readdy.ai/api/search-image?query=beautiful%20suburban%20home%20with%20lush%20green%20front%20yard%20perfect%20lawn%20residential%20landscaping%20single%20family%20house%20manicured%20grass%20flower%20beds%20curb%20appeal%20homeowner%20property%20well%20maintained%20yard%20residential%20exterior%20warm%20inviting%20neighborhood%20daytime%20natural%20lighting&width=960&height=500&seq=resdiv001&orientation=landscape" 
+              alt="Residential Lawn Care Services" 
+              title="Residential Lawn Care Services for Homeowners — Broadview Solutions Goshen IN"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              width={960}
+              height={500}
+              loading="lazy"
+              decoding="async"
+              style={{
+                transform: `translateY(${divisionResidentialParallax.offset}px)`
+              }}
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/90 via-charcoal/60 to-charcoal-dark/40"></div>
+          <div className="absolute inset-0 border-4 border-transparent group-hover:border-silver-dark/30 transition-all duration-500"></div>
+          <div className="absolute bottom-0 left-0 right-0 p-12">
+            <div className="inline-block bg-silver-dark/20 backdrop-blur-sm border border-silver-dark/40 text-silver-light px-4 py-2 rounded-full text-sm font-medium mb-4">
+              For Homeowners
+            </div>
+            <h2 className="text-4xl font-bold text-offwhite mb-4">Residential Lawn Care</h2>
+            <p className="text-silver-light text-lg mb-6 max-w-md">
+              Enjoy a beautiful yard without the work. Our expert team delivers consistent, reliable service that keeps your home looking its best.
+            </p>
+            <div className="inline-flex items-center text-offwhite font-semibold space-x-2 border-2 border-silver px-6 py-3 rounded-lg hover:bg-silver hover:text-charcoal-dark transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 whitespace-nowrap">
+              <span>Explore Residential Services</span>
+              <i className="ri-arrow-right-line"></i>
+            </div>
+          </div>
+        </Link>
+      </section>
+
+      {/* Google Reviews */}
+      <section className="bg-charcoal py-20 cv-auto">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div
+            ref={reviewsReveal.ref}
+            className={`transition-all duration-700 ${reviewsReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+          >
+            <div className="text-center mb-12">
+              <div className="text-accent uppercase text-sm font-semibold tracking-wider mb-4">Google Reviews</div>
+              <h2 className="text-4xl font-bold text-offwhite mb-3">What Our Customers Say</h2>
+              <div className="flex items-center justify-center space-x-1 mb-2">
+                {[...Array(5)].map((_, i) => (
+                  <i key={i} className="ri-star-fill text-accent text-2xl"></i>
+                ))}
+              </div>
+              <p className="text-silver text-sm">5.0 average &bull; 5 Google reviews</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+              {[
+                { author: 'Verified Customer', location: 'Bristol, Indiana', date: 'July 2024', text: "Alex and his team serviced our property in Bristol, Indiana, and they consistently did an excellent job. They're thorough, professional, and always make sure to clean up the grass clippings at our request and blow off our porches before they leave. I would definitely recommend them to others." },
+                { author: 'Mark T.', location: 'Goshen, Indiana', date: 'August 2024', text: "Broadview Solutions has been maintaining our commercial property in Goshen for two seasons now. Reliable, professional, and the lawn always looks immaculate. They show up on schedule every single time — no excuses, no surprises. Highly recommend for any business owner in Elkhart County." },
+                { author: 'Sarah M.', location: 'Elkhart, Indiana', date: 'October 2024', text: "We hired Broadview for fall cleanup and were blown away by the results. They cleared every leaf, trimmed the beds, and left the yard looking better than it did all summer. Alexis was easy to communicate with and the pricing was very fair. Will absolutely be using them again." },
+                { author: 'Dave R.', location: 'Middlebury, Indiana', date: 'January 2025', text: "Called Broadview after a big snowstorm and they were out plowing within a couple hours. Driveway and walkways were completely clear. Very responsive and professional. This is the kind of local business you want to support — they actually care about doing a good job." },
+                { author: 'Jennifer K.', location: 'Elkhart, Indiana', date: 'March 2025', text: "I've tried several lawn care companies in the Elkhart area and Broadview Solutions is by far the best. The crew is friendly, the work is consistent, and they actually listen when you have specific requests. My yard has never looked this good. Five stars without hesitation." },
+              ].map((review, i) => (
+                <div key={i} className="bg-charcoal-dark border border-silver-dark/20 rounded-xl p-6 hover:border-primary/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex">
+                      {[...Array(5)].map((_, si) => (
+                        <i key={si} className="ri-star-fill text-accent text-sm"></i>
+                      ))}
+                    </div>
+                    <span className="text-silver text-xs">{review.date}</span>
+                  </div>
+                  <i className="ri-double-quotes-l text-2xl text-silver-dark/40 mb-3 block"></i>
+                  <p className="text-silver-light text-sm leading-relaxed mb-5 italic">
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                  <div className="flex items-center space-x-3 pt-4 border-t border-silver-dark/10">
+                    <div className="w-9 h-9 flex items-center justify-center bg-primary/20 rounded-full flex-shrink-0">
+                      <i className="ri-user-line text-primary text-sm"></i>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-offwhite text-sm">{review.author}</div>
+                      <div className="text-xs text-silver flex items-center space-x-1">
+                        <i className="ri-map-pin-line text-xs"></i>
+                        <span>{review.location}</span>
+                      </div>
+                    </div>
+                    <div className="ml-auto w-6 h-6 flex items-center justify-center">
+                      <i className="ri-google-fill text-silver text-base"></i>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Leave a Review CTA card */}
+              <a
+                href="https://www.google.com/maps/search/Broadview+Solutions+Goshen+Indiana"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-charcoal-dark border-2 border-dashed border-silver-dark/30 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-accent/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer group min-h-[200px]"
+              >
+                <div className="w-12 h-12 flex items-center justify-center bg-accent/10 rounded-full mb-4 group-hover:bg-accent/20 transition-colors">
+                  <i className="ri-star-line text-accent text-xl"></i>
+                </div>
+                <div className="font-semibold text-offwhite text-sm mb-2">Happy with our service?</div>
+                <div className="text-silver text-xs leading-relaxed mb-4">Leave us a Google review — it helps other homeowners find us!</div>
+                <div className="flex items-center space-x-1 text-accent text-xs font-semibold group-hover:translate-x-1 transition-transform">
+                  <span>Write a Review</span>
+                  <i className="ri-arrow-right-line"></i>
+                </div>
+              </a>
+            </div>
+
+            <div className="text-center">
+              <Link
+                to="/about"
+                className="inline-flex items-center space-x-2 text-silver hover:text-offwhite text-sm transition-colors cursor-pointer"
+              >
+                <span>Read more about us</span>
+                <i className="ri-arrow-right-line"></i>
+              </Link>
+            </div>
+
+            <div className="mt-12">
+              <InlineCTA context="testimonial" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Rich Text Section */}
+      <section className="bg-charcoal-dark py-20 cv-auto">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div>
+              <h2 className="text-3xl font-bold text-offwhite mb-6">Professional Lawn Care in Goshen &amp; Elkhart County, Indiana</h2>
+              <p className="text-silver-light leading-relaxed mb-4">
+                Broadview Solutions is a family-owned lawn care and property maintenance company proudly serving Goshen, Elkhart, Bristol, Middlebury, and Wakarusa, Indiana. We specialize in three core services — <strong className="text-offwhite">lawn maintenance</strong>, <strong className="text-offwhite">seasonal cleanup</strong>, and <strong className="text-offwhite">snow plowing</strong> — delivering consistent, high-quality results for both residential homeowners and commercial property managers throughout Elkhart County.
+              </p>
+              <p className="text-silver-light leading-relaxed mb-4">
+                Our lawn maintenance program is built around reliability. We show up on schedule, mow with precision, edge cleanly, and leave your property spotless every single visit. Whether you need weekly service during the growing season or bi-weekly care, we tailor our schedule to your lawn's needs and your lifestyle.
+              </p>
+              <p className="text-silver-light leading-relaxed mb-4">
+                When the seasons change, so do your property's needs. Our spring and fall seasonal cleanup services prepare your landscape for what's ahead — clearing debris, refreshing mulch beds, removing leaves, and ensuring your yard transitions smoothly from one season to the next. We handle the hard work so you can enjoy your outdoor space without the stress.
+              </p>
+              <p className="text-silver-light leading-relaxed">
+                Northern Indiana winters can be unpredictable and demanding. Our snow plowing service provides 24/7 storm monitoring and rapid response to keep your driveways, parking lots, and walkways safe and accessible. We offer seasonal contracts for commercial clients and on-call service for residential properties, giving you peace of mind no matter what the forecast brings.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-offwhite mb-6">Why Elkhart County Homeowners &amp; Businesses Choose Us</h2>
+              <p className="text-silver-light leading-relaxed mb-4">
+                What sets Broadview Solutions apart is our genuine commitment to quality and community. We're not just a lawn care company — we're your neighbors. Our team lives and works in Elkhart County, which means we understand the local climate, soil conditions, and seasonal timing that make a real difference in lawn care results.
+              </p>
+              <p className="text-silver-light leading-relaxed mb-4">
+                We invest in commercial-grade equipment because we believe every property deserves a professional finish. Our mowers create clean, even cuts that promote healthy grass growth. Our edging leaves crisp, defined borders. And our cleanup process ensures no clippings, debris, or mess is left behind when we're done.
+              </p>
+              <p className="text-silver-light leading-relaxed mb-4">
+                Transparency is at the core of how we operate. We provide detailed, written estimates before any work begins — no surprise charges, no hidden fees. Our pricing is straightforward and competitive, and we stand behind every job with a satisfaction guarantee. If something isn't right, we make it right.
+              </p>
+              <p className="text-silver-light leading-relaxed">
+                We are fully licensed, bonded, and insured, giving homeowners and commercial clients complete confidence that their property is in safe, professional hands. From a single-family home in Goshen to a multi-building office campus in Elkhart, we bring the same level of care and professionalism to every job we take on.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="bg-charcoal-dark py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          {/* Section Header */}
+          <div 
+            ref={aboutHeaderReveal.ref}
+            className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-700 ${
+              aboutHeaderReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="text-accent uppercase text-sm font-semibold tracking-wider mb-4">WHO WE ARE</div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-offwhite mb-6 leading-tight">
+              A Team You Can <span className="text-primary italic">Trust in Your Yard</span>
+            </h2>
+            <p className="text-lg text-silver-light leading-relaxed">
+              We're not just a lawn care company — we're your neighbors. Driven by pride in our work and genuine care for the people we serve.
+            </p>
+          </div>
+
+          {/* Main Story Block */}
+          <div 
+            ref={aboutStoryReveal.ref}
+            className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20 transition-all duration-700 ${
+              aboutStoryReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-12'
+            }`}
+          >
+            <div className="relative">
+              <div ref={aboutTeamParallax.ref} className="relative h-[480px] rounded-2xl overflow-hidden shadow-2xl"
+                style={{
+                  boxShadow: '0 0 30px 8px rgba(74, 222, 128, 0.35), 0 0 60px 16px rgba(74, 222, 128, 0.15), 0 0 0 2px rgba(74, 222, 128, 0.4)'
+                }}
+              >
+                <img
+                  src="https://static.readdy.ai/image/af8ae33b67f17c82a3c09cb93c97754b/ff3f335b62270b3bdcbced9e413ec8b4.webp"
+                  alt="Broadview Solutions crew working"
+                  title="Broadview Solutions Crew — Family-Owned Lawn Care Team in Northern Indiana"
+                  className="w-full h-full object-contain object-center"
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    transform: `translateY(${aboutTeamParallax.offset}px)`
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/60 via-transparent to-transparent"></div>
+              </div>
+              {/* Floating badge */}
+              <div className="absolute -bottom-6 -right-6 bg-primary text-white px-8 py-5 rounded-2xl shadow-2xl shadow-primary/30">
+                <div className="text-3xl font-bold leading-none">Family</div>
+                <div className="text-sm font-medium mt-1 opacity-90">Owned &amp; Operated</div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-3xl font-bold text-offwhite leading-snug">
+                Young, Driven, and Built on a Foundation of Hard Work
+              </h3>
+              <p className="text-silver-light leading-relaxed text-base">
+                At Broadview Solutions, we're a family-oriented team with a simple mission: show up, do the job right, and leave your property better than we found it. We're young, energetic, and genuinely passionate about what we do — and that energy shows in every yard we maintain.
+              </p>
+              <p className="text-silver-light leading-relaxed text-base">
+                We invest in professional-grade equipment because we believe your home deserves the same quality of care that commercial properties receive. Clean cuts, precise edges, and a spotless finish — every single visit.
+              </p>
+              <p className="text-silver-light leading-relaxed text-base">
+                Our crew is approachable, organized, and respectful of your space. We arrive on time, work efficiently, and leave without a trace — except for a beautifully maintained lawn.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <div className="bg-charcoal border border-silver-dark/30 rounded-xl p-5">
+                  <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-lg mb-3">
+                    <i className="ri-tools-line text-xl text-primary"></i>
+                  </div>
+                  <div className="text-sm font-semibold text-offwhite mb-1">Pro Equipment</div>
+                  <div className="text-xs text-silver leading-relaxed">Commercial-grade tools for a flawless finish every time</div>
+                </div>
+                <div className="bg-charcoal border border-silver-dark/30 rounded-xl p-5">
+                  <div className="w-10 h-10 flex items-center justify-center bg-accent/10 rounded-lg mb-3">
+                    <i className="ri-customer-service-2-line text-xl text-accent"></i>
+                  </div>
+                  <div className="text-sm font-semibold text-offwhite mb-1">Unmatched Service</div>
+                  <div className="text-xs text-silver leading-relaxed">Responsive, reliable, and always easy to reach</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Who We Serve */}
+          <div 
+            ref={aboutClientsReveal.ref}
+            className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20 transition-all duration-700 ${
+              aboutClientsReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-12'
+            }`}
+          >
+            <div className="order-2 lg:order-1 space-y-6">
+              <div className="text-accent uppercase text-sm font-semibold tracking-wider">OUR IDEAL CLIENTS</div>
+              <h3 className="text-3xl font-bold text-offwhite leading-snug">
+                Reliable Weekly Care for Homeowners Who Deserve a Break
+              </h3>
+              <p className="text-silver-light leading-relaxed text-base">
+                We specialize in serving middle-aged and senior homeowners who want a yard they're proud of — without the physical strain or time commitment of doing it themselves. Our clients value consistency, trust, and a crew that treats their home with the same respect they would.
+              </p>
+              <p className="text-silver-light leading-relaxed text-base">
+                Whether you're managing a busy schedule, recovering from an injury, or simply ready to hand off the outdoor work to someone dependable — we're here for you, week after week, season after season.
+              </p>
+
+              <ul className="space-y-3 pt-2">
+                {[
+                  { icon: 'ri-calendar-check-line', text: 'Consistent weekly or bi-weekly maintenance schedules' },
+                  { icon: 'ri-shield-user-line', text: 'Trustworthy crew you\'ll recognize visit after visit' },
+                  { icon: 'ri-phone-line', text: 'Easy communication — no runaround, no voicemail maze' },
+                  { icon: 'ri-home-heart-line', text: 'Respectful of your property, your time, and your privacy' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start space-x-3">
+                    <div className="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-lg flex-shrink-0 mt-0.5">
+                      <i className={`${item.icon} text-primary text-sm`}></i>
+                    </div>
+                    <span className="text-silver-light text-sm leading-relaxed">{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="order-1 lg:order-2 relative h-[420px] rounded-2xl overflow-hidden shadow-2xl">
+              <div ref={aboutClientParallax.ref} className="w-full h-full">
+                <img
+                  src="https://readdy.ai/api/search-image?query=friendly%20lawn%20care%20worker%20helping%20elderly%20senior%20homeowner%20in%20front%20yard%20smiling%20conversation%20warm%20interaction%20residential%20neighborhood%20green%20lawn%20well%20maintained%20property%20trust%20community%20care%20sunny%20afternoon%20natural%20light%20genuine%20moment&width=800&height=600&seq=aboutus_client_001&orientation=landscape"
+                  alt="Broadview Solutions serving homeowners"
+                  title="Trusted Lawn Care for Homeowners & Seniors — Broadview Solutions Indiana"
+                  className="w-full h-full object-cover object-top"
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    transform: `translateY(${aboutClientParallax.offset}px)`
+                  }}
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/50 via-transparent to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Community Care Strip */}
+          <div 
+            ref={aboutCommunityReveal.ref}
+            className={`bg-charcoal border border-silver-dark/20 rounded-2xl p-10 lg:p-14 transition-all duration-700 ${
+              aboutCommunityReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-12'
+            }`}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <div className="text-accent uppercase text-sm font-semibold tracking-wider mb-4">NEIGHBORS HELPING NEIGHBORS</div>
+                <h3 className="text-3xl font-bold text-offwhite mb-5 leading-snug">
+                  We Don't Just Maintain Lawns — We Look Out for People
+                </h3>
+                <p className="text-silver-light leading-relaxed text-base mb-4">
+                  Community isn't a marketing word for us — it's something we live out in small, everyday ways. When we're on a job and notice a neighbor's gate left open, we close it. When an elderly homeowner needs a hand moving a piece of furniture or relocating a heavy flower pot, we're happy to help. When trash cans need to be brought in from the curb, we take care of it without being asked.
+                </p>
+                <p className="text-silver-light leading-relaxed text-base">
+                  These aren't big gestures — but they're genuine ones. We believe that showing up with integrity and a helpful attitude is what separates a good company from a great one.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: 'ri-door-open-line', color: 'text-primary', bg: 'bg-primary/10', label: 'Closing Gates', desc: 'We notice the small things so you don\'t have to' },
+                  { icon: 'ri-recycle-line', color: 'text-accent', bg: 'bg-accent/10', label: 'Trash Can Help', desc: 'Moving bins in and out when needed' },
+                  { icon: 'ri-flower-line', color: 'text-primary', bg: 'bg-primary/10', label: 'Flower Pots', desc: 'Relocating planters and pots with care' },
+                  { icon: 'ri-heart-line', color: 'text-accent', bg: 'bg-accent/10', label: 'Helping Hands', desc: 'Small tasks for neighbors and the elderly' },
+                ].map((item, i) => (
+                  <div key={i} className="bg-charcoal-dark border border-silver-dark/20 rounded-xl p-5 hover:border-silver-dark/40 transition-colors">
+                    <div className={`w-10 h-10 flex items-center justify-center ${item.bg} rounded-lg mb-3`}>
+                      <i className={`${item.icon} text-xl ${item.color}`}></i>
+                    </div>
+                    <div className="text-sm font-semibold text-offwhite mb-1">{item.label}</div>
+                    <div className="text-xs text-silver leading-relaxed">{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <InlineCTA context="value" />
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative py-20 bg-charcoal-dark cv-auto">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <div 
+            ref={ctaReveal.ref}
+            className={`bg-[#1A2424] border border-[#8A9BA8]/20 rounded-2xl shadow-2xl p-8 lg:p-12 transition-all duration-700 ${
+              ctaReveal.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-12'
+            }`}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+              Ready to Transform Your Property?
+            </h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-[#2D5016] to-[#B8A882] mb-6"></div>
+            <p className="text-[#C0C8CC] mb-4">
+              Get a free, no-obligation estimate today. Fill out the form below and we'll get back to you within 24 hours.
+            </p>
+            <a 
+              href="tel:+15745963633" 
+              className="inline-block text-3xl font-bold text-[#2D5016] hover:text-[#B8A882] transition-colors mb-8 cursor-pointer"
+            >
+              (574) 596-3633
+            </a>
+
+            {formStatus === 'success' && (
+              <div className="mb-6 bg-[#2D5016]/20 border border-[#2D5016] text-[#2D5016] px-6 py-4 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <i className="ri-checkbox-circle-line text-xl"></i>
+                  <span className="font-semibold">Thank you! We'll contact you soon.</span>
+                </div>
+              </div>
+            )}
+
+            {formStatus === 'error' && (
+              <div className="mb-6 bg-red-900/20 border border-red-500 text-red-400 px-6 py-4 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <i className="ri-error-warning-line text-xl"></i>
+                  <span className="font-semibold">Something went wrong. Please try again.</span>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6" data-readdy-form id="contact-form">
+              <input type="hidden" name="_forward" value="admin@clearsitesystems.com" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="home-name" className="block text-sm font-semibold text-white mb-2">
+                    Full Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    id="home-name"
+                    name="name"
+                    required
+                    placeholder="John Smith"
+                    className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm placeholder-[#8A9BA8]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="home-email" className="block text-sm font-semibold text-white mb-2">
+                    Email Address *
+                  </label>
+                  <input 
+                    type="email" 
+                    id="home-email"
+                    name="email"
+                    required
+                    placeholder="john@example.com"
+                    className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm placeholder-[#8A9BA8]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="home-phone" className="block text-sm font-semibold text-white mb-2">
+                    Phone Number *
+                  </label>
+                  <input 
+                    type="tel" 
+                    id="home-phone"
+                    name="phone"
+                    required
+                    placeholder="(555) 123-4567"
+                    className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm placeholder-[#8A9BA8]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="home-property-type" className="block text-sm font-semibold text-white mb-2">
+                    Property Type *
+                  </label>
+                  <select 
+                    id="home-property-type"
+                    name="property_type"
+                    required
+                    className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm"
+                  >
+                    <option value="">Select Property Type</option>
+                    <option value="residential">Residential</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="hoa">HOA/Community</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label htmlFor="home-address" className="block text-sm font-semibold text-white mb-2">
+                  Property Address
+                </label>
+                <input 
+                  type="text" 
+                  id="home-address"
+                  name="address"
+                  placeholder="123 Main Street, City, ST 12345"
+                  className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm placeholder-[#8A9BA8]"
+                />
+              </div>
+              <div>
+                <label htmlFor="home-service" className="block text-sm font-semibold text-white mb-2">
+                  Services Interested In *
+                </label>
+                <select 
+                  id="home-service"
+                  name="service_interest"
+                  required
+                  className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none text-sm"
+                >
+                  <option value="">Select Service</option>
+                  <option value="lawn-maintenance">Lawn Maintenance</option>
+                  <option value="seasonal-cleanup">Seasonal Cleanup</option>
+                  <option value="snow-plowing">Snow Plowing</option>
+                  <option value="multiple">Multiple Services</option>
+                  <option value="not-sure">Not Sure Yet</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="home-message" className="block text-sm font-semibold text-white mb-2">
+                  Project Details
+                </label>
+                <textarea 
+                  id="home-message"
+                  name="message"
+                  rows={4}
+                  maxLength={500}
+                  placeholder="Tell us about your project, property size, specific needs, or any questions you have... (Max 500 characters)"
+                  className="w-full px-4 py-3 bg-[#1C2B2B] border border-[#8A9BA8]/30 text-white rounded-lg focus:ring-2 focus:ring-[#2D5016] focus:border-[#2D5016] outline-none resize-none text-sm placeholder-[#8A9BA8]"
+                ></textarea>
+                <p className="text-xs text-[#8A9BA8] mt-1">Maximum 500 characters</p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-[#C0C8CC] pt-2">
+                <div className="flex items-center space-x-2">
+                  <i className="ri-shield-check-line text-[#B8A882]"></i>
+                  <span>Licensed &amp; Insured</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <i className="ri-money-dollar-circle-line text-[#B8A882]"></i>
+                  <span>Free Estimates</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <i className="ri-time-line text-[#B8A882]"></i>
+                  <span>24-Hour Response</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <MobileStickyCTA />
+      <Footer />
+    </div>
+  );
+}
