@@ -1,0 +1,37 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Background circle -->
+  <circle cx="24" cy="24" r="24" fill="#1A2424"/>
+
+  <!-- Blade of grass (center-bottom) -->
+  <path d="M24 38 C24 38 22 30 23 22 C23.5 18 24 16 24 16 C24 16 24.5 18 25 22 C26 30 24 38 24 38Z" fill="#2D5016"/>
+  <path d="M24 38 C24 38 22 30 23 22 C23.5 18 24 16 24 16 C24 16 24.5 18 25 22 C26 30 24 38 24 38Z" fill="#3D6B1F" opacity="0.6"/>
+
+  <!-- Left grass blade -->
+  <path d="M24 36 C24 36 18 30 17 24 C16.5 20 17 18 17 18 C17 18 19 20 20.5 24 C22 28 24 36 24 36Z" fill="#2D5016"/>
+
+  <!-- Right grass blade -->
+  <path d="M24 36 C24 36 30 30 31 24 C31.5 20 31 18 31 18 C31 18 29 20 27.5 24 C26 28 24 36 24 36Z" fill="#2D5016"/>
+
+  <!-- Leaf (top-left area) -->
+  <path d="M10 18 C10 18 10 10 18 10 C18 10 18 18 10 18Z" fill="#3D6B1F"/>
+  <line x1="10" y1="18" x2="18" y2="10" stroke="#2D5016" stroke-width="0.8"/>
+
+  <!-- Snowflake (top-right area) -->
+  <!-- Center dot -->
+  <circle cx="36" cy="12" r="1.2" fill="#C0C8CC"/>
+  <!-- Main arms -->
+  <line x1="36" y1="7" x2="36" y2="17" stroke="#C0C8CC" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="31" y1="12" x2="41" y2="12" stroke="#C0C8CC" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="32.5" y1="8.5" x2="39.5" y2="15.5" stroke="#C0C8CC" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="39.5" y1="8.5" x2="32.5" y2="15.5" stroke="#C0C8CC" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Arm tips -->
+  <line x1="36" y1="7" x2="34.5" y2="8.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="36" y1="7" x2="37.5" y2="8.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="36" y1="17" x2="34.5" y2="15.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="36" y1="17" x2="37.5" y2="15.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="31" y1="12" x2="32.5" y2="10.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="31" y1="12" x2="32.5" y2="13.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="41" y1="12" x2="39.5" y2="10.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="41" y1="12" x2="39.5" y2="13.5" stroke="#C0C8CC" stroke-width="0.9" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,421 @@
+import { useState, useEffect, useCallback } from 'react';
+
+export type ArticleStatus = 'draft' | 'published' | 'archived';
+
+export interface BlogArticle {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  featured_image: string;
+  category: string;
+  status: ArticleStatus;
+  seo_title: string;
+  seo_description: string;
+  author: string;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+}
+
+const DB_NAME = 'BroadviewBlog';
+const DB_VERSION = 1;
+
+function openDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = (e) => {
+      const db = (e.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains('articles')) {
+        db.createObjectStore('articles', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('categories')) {
+        db.createObjectStore('categories', { keyPath: 'id' });
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function getAll<T>(store: string): Promise<T[]> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(store, 'readonly');
+      const req = tx.objectStore(store).getAll();
+      req.onsuccess = () => resolve(req.result as T[]);
+      req.onerror = () => reject(req.error);
+    });
+  } catch {
+    return [];
+  }
+}
+
+async function getById<T>(store: string, id: string): Promise<T | undefined> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(store, 'readonly');
+      const req = tx.objectStore(store).get(id);
+      req.onsuccess = () => resolve(req.result as T);
+      req.onerror = () => reject(req.error);
+    });
+  } catch {
+    return undefined;
+  }
+}
+
+async function putItem<T>(store: string, item: T): Promise<void> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(store, 'readwrite');
+      const req = tx.objectStore(store).put(item);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
+  } catch {
+    // Silently fail if IndexedDB is unavailable
+  }
+}
+
+async function deleteItem(store: string, id: string): Promise<void> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(store, 'readwrite');
+      const req = tx.objectStore(store).delete(id);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
+  } catch {
+    // Silently fail if IndexedDB is unavailable
+  }
+}
+
+async function seedCategoriesIfEmpty(): Promise<void> {
+  try {
+    const existing = await getAll<BlogCategory>('categories');
+    if (existing.length === 0) {
+      const defaultCategories: BlogCategory[] = [
+        { id: 'cat-1', name: 'Lawn Care', slug: 'lawn-care', description: 'Lawn maintenance tips and best practices' },
+        { id: 'cat-2', name: 'Seasonal Tips', slug: 'seasonal-tips', description: 'Seasonal landscaping guides' },
+        { id: 'cat-3', name: 'How-To', slug: 'how-to', description: 'DIY guides and tutorials' },
+        { id: 'cat-4', name: 'Design Ideas', slug: 'design-ideas', description: 'Landscape design inspiration' },
+        { id: 'cat-5', name: 'Commercial', slug: 'commercial', description: 'Commercial property landscaping' },
+        { id: 'cat-6', name: 'Residential', slug: 'residential', description: 'Home lawn care guides' },
+      ];
+      for (const cat of defaultCategories) {
+        await putItem('categories', cat);
+      }
+    }
+  } catch {
+    // Silently fail if IndexedDB is unavailable
+  }
+}
+
+const SEED_ARTICLE_ID = 'art_seed_spring_2026';
+const OLD_SEED_ARTICLE_ID = 'art_seed_spring_old';
+
+async function seedArticleIfEmpty(): Promise<void> {
+  try {
+    // Delete old inaccurate article if it exists
+    try {
+      await deleteItem('articles', OLD_SEED_ARTICLE_ID);
+    } catch {
+      // Old article may not exist — that's fine
+    }
+
+    const existing = await getAll<BlogArticle>('articles');
+    if (existing.length === 0) {
+      const now = new Date().toISOString();
+      const seedArticle: BlogArticle = {
+        id: SEED_ARTICLE_ID,
+        slug: 'spring-property-prep-goshen-elkhart-county-guide',
+        title: 'Spring Property Preparation Guide for Goshen & Elkhart County Homeowners',
+        excerpt: 'Everything you need to know about getting your property ready after a northern Indiana winter. From cleanup to mulching, this local guide covers the essential steps for a beautiful yard all season long.',
+        featured_image: '/readdy-assets/search-seedarticle002.jpg',
+        category: 'Seasonal Tips',
+        status: 'published',
+        seo_title: 'Spring Property Preparation Guide for Goshen & Elkhart County Homeowners',
+        seo_description: 'Expert spring property prep tips for Goshen, Elkhart, Bristol, Middlebury & Wakarusa. Learn when to clean up, edge, mulch, and schedule professional maintenance.',
+        author: 'Broadview Solutions',
+        published_at: now,
+        created_at: now,
+        updated_at: now,
+        content: `<p class="text-[#C0C8CC] text-lg leading-relaxed mb-6">Spring in northern Indiana is the most important time of year for setting your property up for success. After months of snow, freeze-thaw cycles, and dormant growth, the steps you take between late March and early May will determine how your landscape looks through summer and fall. At Broadview Solutions, we have spent over a decade maintaining lawns and landscapes across Goshen, Elkhart, Bristol, Middlebury, and Wakarusa. This guide covers the practical prep work our crews do every spring — and what you can tackle yourself to keep your property looking its best.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Understanding Northern Indiana's Spring Challenges</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Elkhart County sits in USDA Hardiness Zone 5b, which means our winters regularly dip below -10°F and our last frost typically passes in mid-to-late April. These conditions create specific property care challenges:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-3 mb-6 ml-4">
+<li><strong class="text-white">Soil compaction:</strong> Repeated freeze-thaw cycles compress soil particles, making it harder for grass roots to access water and nutrients.</li>
+<li><strong class="text-white">Winter desiccation:</strong> Cold, dry winds strip moisture from dormant grass and landscape plants.</li>
+<li><strong class="text-white">Salt damage:</strong> Road salt and driveway de-icers accumulate near edges, creating brown, stressed patches along walkways and driveways.</li>
+<li><strong class="text-white">Debris accumulation:</strong> Fallen branches, leaves, and winter litter smother grass and create breeding grounds for pests and disease.</li>
+<li><strong class="text-white">Early weed pressure:</strong> Crabgrass and broadleaf weeds germinate as soon as daytime temperatures stay consistently above 50°F — often by mid-April.</li>
+</ul>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 1: Clean Up and Assess (Late March to Early April)</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Wait until the ground is firm enough to walk on without leaving deep footprints. Rushing onto soggy soil causes compaction that will haunt you all season. Once conditions are right:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Rake away dead leaves, matted grass, and winter debris from lawns and beds</li>
+<li>Remove any branches or objects that smothered grass over winter</li>
+<li>Inspect for salt damage along driveways, walkways, and road edges</li>
+<li>Look for vole or mole tunnels — raised ridges indicate burrowing activity beneath the surface</li>
+<li>Note bare patches, thin areas, and spots where grass failed to green up</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6"><strong class="text-white">Pro tip:</strong> Do not disturb soil too early. Wait until grass is actively growing — usually mid-to-late April — so it can recover quickly from any stress.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 2: Bed Edging and Preparation</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Clean, sharp bed edges instantly improve curb appeal and prevent grass from creeping into your landscape beds. Spring is the ideal time to redefine bed lines because the soil is soft and workable.</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Use a sharp spade or edging tool to cut crisp lines along existing beds</li>
+<li>Remove grass and weeds that crept into beds over winter</li>
+<li>Cut back dead perennial stems and remove damaged shrub branches</li>
+<li>Loosen the top layer of soil in beds to improve water absorption</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6"><strong class="text-white">Professional approach:</strong> Our crews use commercial bed edgers that cut precise, consistent lines much faster than hand tools. For large properties or complex bed shapes, professional edging delivers a uniform, polished look that hand tools simply cannot match.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 3: Mulch Installation</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Fresh mulch is one of the highest-impact improvements you can make in spring. A proper mulch layer:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Suppresses weed germination by blocking sunlight</li>
+<li>Retains soil moisture, reducing the need for supplemental watering</li>
+<li>Insulates plant roots from Indiana's erratic spring temperature swings</li>
+<li>Gives landscape beds a clean, finished appearance that boosts curb appeal</li>
+<li>Breaks down over time, adding organic matter to the soil</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-4"><strong class="text-white">Application guidelines:</strong></p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Apply 2-3 inches of mulch across all beds</li>
+<li>Keep mulch 2-3 inches away from tree trunks and shrub stems to prevent rot</li>
+<li>Do not pile mulch in a "volcano" around trees — this suffocates roots and invites pests</li>
+<li>Refresh existing mulch by raking it smooth and adding a light top-dressing if needed</li>
+<li>Choose hardwood mulch for most Elkhart County beds — it lasts longer and holds color better than pine</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6"><strong class="text-white">Timing:</strong> Install mulch after cleanup and edging are complete, typically mid-to-late April once the soil has warmed. Mulching too early can insulate cold soil and delay plant growth.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 4: Mowing Best Practices for Spring</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Your first few mows of the season set the tone for the entire year. Here is how to do it right:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-3 mb-6 ml-4">
+<li><strong class="text-white">Wait until grass is dry:</strong> Mowing wet grass clumps, spreads disease, and creates uneven cuts.</li>
+<li><strong class="text-white">Set height to 3-3.5 inches:</strong> Taller grass develops deeper roots, shades out weeds, and retains moisture better. Never cut lower than 2.5 inches for cool-season grasses common in northern Indiana.</li>
+<li><strong class="text-white">Follow the one-third rule:</strong> Never remove more than one-third of the blade length in a single mowing. If grass is 6 inches tall, cut to 4 inches — not 2.</li>
+<li><strong class="text-white">Sharpen blades first:</strong> Dull blades tear grass rather than cutting it, leaving ragged edges that turn brown and invite fungal infection.</li>
+<li><strong class="text-white">Leave clippings:</strong> Grass clippings return nitrogen to the soil and do NOT cause thatch. Only remove clippings if they form thick, smothering clumps.</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6"><strong class="text-white">Professional mowing vs. DIY:</strong> Commercial mowers cut cleaner and more consistently than most residential equipment. If your mower is older or has not been serviced, a professional spring tune-up (blade sharpening, oil change, filter replacement) dramatically improves cut quality. Many homeowners find that hiring a weekly mowing service actually costs less than maintaining professional-grade equipment themselves.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 5: Weed Control &amp; Prevention Strategies</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Effective weed control in Goshen and Elkhart County starts with prevention, not reaction. A thick, healthy lawn is your best defense against weeds — dense turf simply leaves no room for weed seeds to germinate and establish. This is why proper mowing height and regular maintenance are so important as part of a complete lawn care program.</p>
+<p class="text-[#C0C8CC] leading-relaxed mb-4"><strong class="text-white">Early weed removal:</strong> Pulling crabgrass and broadleaf weeds by hand in early spring — typically when daytime temperatures stay consistently above 50°F, usually late March to early April in northern Indiana — prevents them from spreading and setting seed. Catching them early keeps beds and lawn edges clean before they take hold.</p>
+<p class="text-[#C0C8CC] leading-relaxed mb-4"><strong class="text-white">Post-emergent treatments:</strong> Target existing broadleaf weeds like dandelions, clover, and plantain. Spot treatments are preferable to blanket applications when weed pressure is moderate, as they minimize chemical use and reduce the risk of turf damage. Our blog covers both DIY weed control strategies and when it makes sense to call a professional.</p>
+<p class="text-[#C0C8CC] leading-relaxed mb-6"><strong class="text-white">Mulch as weed prevention:</strong> In landscape beds, a 2-3 inch mulch layer is often more effective than herbicides for preventing weed growth. Mulch blocks the light weeds need to germinate while improving soil health over time.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Step 6: Edging, Trimming, and Cleanup</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Clean edges and thorough cleanup separate a professional-looking property from an amateur one. Every maintenance visit should include:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li><strong class="text-white">String trimming:</strong> Cut grass around fences, trees, mailboxes, and obstacles where mowers cannot reach.</li>
+<li><strong class="text-white">Precision edging:</strong> Maintain crisp lines along driveways, walkways, and curbs with a dedicated edger.</li>
+<li><strong class="text-white">Blowdown cleanup:</strong> Remove all grass clippings and debris from hard surfaces before leaving. Grass stains on concrete look unprofessional and can be slippery.</li>
+<li><strong class="text-white">Porch and patio cleanup:</strong> Blow leaves and debris off porches, patios, and decks. These areas are high-visibility and set the first impression for visitors.</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6">At Broadview Solutions, we train our crews to treat every property like it is their own. The blowdown and detail work — often skipped by budget mowing services — is what separates a professional result from a mediocre one.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Spring Property Care Calendar for Elkhart County</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Here is a month-by-month breakdown to keep your property on track:</p>
+
+<h3 class="text-2xl font-bold text-white mt-8 mb-4">March (Late March — Ground Thaw)</h3>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Remove winter debris and assess lawn and bed condition</li>
+<li>Plan any hardscaping or drainage improvements</li>
+<li>Service lawn equipment — sharpen blades, change oil, replace filters</li>
+<li>Schedule spring cleanup and mulching with your landscaping company</li>
+</ul>
+
+<h3 class="text-2xl font-bold text-white mt-8 mb-4">April (The Action Month)</h3>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Begin spring cleanup — raking, debris removal, bed edging</li>
+<li>Install fresh mulch in all landscape beds</li>
+<li>Begin first mowing at 3-3.5 inches once grass reaches 4.5-5 inches</li>
+<li>Remove early weeds by hand before they spread</li>
+<li>Start weekly or bi-weekly mowing schedule</li>
+</ul>
+
+<h3 class="text-2xl font-bold text-white mt-8 mb-4">May (Establishment and Maintenance)</h3>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Continue mowing at proper height every 5-7 days</li>
+<li>Monitor for weed breakthroughs and spot-treat as needed</li>
+<li>Refresh mulch in beds that settled or washed out</li>
+<li>Edge beds and walkways that grass is creeping into</li>
+<li>Schedule ongoing maintenance program for the season</li>
+</ul>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">When to Call Broadview Solutions</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">DIY property care is rewarding, but some situations are better handled by professionals:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-3 mb-6 ml-4">
+<li><strong class="text-white">Large properties:</strong> Properties over half an acre require significant time and equipment investment. Our crews handle large lawns efficiently with commercial mowers that cut your weekly time commitment to zero.</li>
+<li><strong class="text-white">Recurring maintenance:</strong> A consistent weekly or bi-weekly mowing program delivers better results than sporadic DIY efforts. Missed weeks lead to overgrowth, stress on grass, and more time-consuming recovery mows.</li>
+<li><strong class="text-white">Time constraints:</strong> A comprehensive spring program requires 15-25 hours of hands-on work spread across 6-8 weeks. If your schedule does not allow it, a seasonal maintenance program delivers consistent results without sacrificing your weekends.</li>
+<li><strong class="text-white">Seasonal transitions:</strong> Spring and fall cleanups involve heavy lifting, hauling, and detailed bed work that most homeowners lack the time, tools, or truck space to handle efficiently.</li>
+</ul>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Professional Spring Property Care Programs</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-4">Broadview Solutions offers customized spring property care programs for homes and businesses throughout Goshen, Elkhart, Bristol, Middlebury, and Wakarusa. Our seasonal packages include:</p>
+<ul class="list-disc list-inside text-[#C0C8CC] space-y-2 mb-6 ml-4">
+<li>Spring cleanup and debris removal</li>
+<li>Professional bed edging and reshaping</li>
+<li>Fresh mulch installation at proper depth</li>
+<li>Weekly or bi-weekly mowing with edging, trimming, and blowdown</li>
+<li>Weed control and monitoring</li>
+<li>Ongoing seasonal maintenance through fall</li>
+</ul>
+<p class="text-[#C0C8CC] leading-relaxed mb-6">We tailor every program to your specific property size, landscape features, and budget. Whether you need a one-time spring revitalization or a full-season maintenance plan, our team delivers consistent, professional results that keep your property looking its best.</p>
+
+<h2 class="text-3xl font-bold text-white mt-12 mb-6">Get Started This Spring</h2>
+<p class="text-[#C0C8CC] leading-relaxed mb-6">Your property is a living investment. The care you provide in spring directly determines its health, appearance, and curb appeal through summer, fall, and into next winter. Follow this guide step by step, or contact Broadview Solutions for a free property assessment and customized spring care plan. We will evaluate your lawn, identify problem areas, and recommend the exact services your property needs to look its best all season long.</p>`,
+      };
+      await putItem('articles', seedArticle);
+    }
+  } catch {
+    // Silently fail if IndexedDB is unavailable
+  }
+}
+
+function generateId(): string {
+  return 'art_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .substring(0, 80);
+}
+
+export function useBlogArticles() {
+  const [articles, setArticles] = useState<BlogArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await seedCategoriesIfEmpty();
+      await seedArticleIfEmpty();
+      const data = await getAll<BlogArticle>('articles');
+      data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setArticles(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load articles');
+      setArticles([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const getArticle = useCallback(async (id: string): Promise<BlogArticle | undefined> => {
+    try {
+      return await getById<BlogArticle>('articles', id);
+    } catch {
+      return undefined;
+    }
+  }, []);
+
+  const getArticleBySlug = useCallback(async (slug: string): Promise<BlogArticle | undefined> => {
+    try {
+      const all = await getAll<BlogArticle>('articles');
+      return all.find((a) => a.slug === slug);
+    } catch {
+      return undefined;
+    }
+  }, []);
+
+  const saveArticle = useCallback(async (article: Partial<BlogArticle> & { title: string; content: string }): Promise<BlogArticle> => {
+    const now = new Date().toISOString();
+    const isNew = !article.id;
+    const id = article.id || generateId();
+    const slug = article.slug || slugify(article.title);
+
+    const existing = await getById<BlogArticle>('articles', id);
+    const fullArticle: BlogArticle = {
+      id,
+      slug,
+      title: article.title,
+      excerpt: article.excerpt || '',
+      content: article.content,
+      featured_image: article.featured_image || '',
+      category: article.category || 'Lawn Care',
+      status: article.status || 'draft',
+      seo_title: article.seo_title || article.title,
+      seo_description: article.seo_description || '',
+      author: article.author || 'Broadview Solutions',
+      published_at: article.status === 'published' && !existing?.published_at ? now : (article.published_at || existing?.published_at || null),
+      created_at: existing?.created_at || now,
+      updated_at: now,
+    };
+
+    await putItem('articles', fullArticle);
+    await refresh();
+    return fullArticle;
+  }, [refresh]);
+
+  const deleteArticle = useCallback(async (id: string) => {
+    await deleteItem('articles', id);
+    await refresh();
+  }, [refresh]);
+
+  const publishedArticles = articles.filter((a) => a.status === 'published');
+
+  return {
+    articles,
+    publishedArticles,
+    loading,
+    error,
+    refresh,
+    getArticle,
+    getArticleBySlug,
+    saveArticle,
+    deleteArticle,
+  };
+}
+
+export function useBlogCategories() {
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(async () => {
+    await seedCategoriesIfEmpty();
+    const data = await getAll<BlogCategory>('categories');
+    setCategories(data);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const saveCategory = useCallback(async (category: BlogCategory) => {
+    await putItem('categories', category);
+    await refresh();
+  }, [refresh]);
+
+  const deleteCategory = useCallback(async (id: string) => {
+    await deleteItem('categories', id);
+    await refresh();
+  }, [refresh]);
+
+  return { categories, loading, refresh, saveCategory, deleteCategory };
+}
